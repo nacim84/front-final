@@ -13,7 +13,7 @@ const ProfilePage = async () => {
         (session && session.user)
         &&
         <>
-          Bonjour <span className="text-primary">{session.user?.firstName} {session.user?.lastName}</span>, veuillez procéder au referendum municipale ci-dessous;
+          Bonjour <span className="text-blue-600">{session.user?.firstName} {session.user?.lastName}</span>, veuillez procéder au referendum municipale ci-dessous;
         </>
       }
       </p>

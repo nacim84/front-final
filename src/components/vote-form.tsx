@@ -27,6 +27,8 @@ export const VoteForm = () => {
   const client = usePublicClient();
   const { toast } = useToast();
   const router = useRouter();
+  const [f, setFoundVoteId] = useLocalStorage<number>("CURRENT_VOTE_ID", 0);
+  const [t, setVoteTransactionHash] = useLocalStorage<string>('VOTE_TRANSACTION_HASH', "");
 
   const formVote = useForm<TVoteSchema>({
     resolver: voteFormResolver,
@@ -62,6 +64,8 @@ export const VoteForm = () => {
 
       // 2 - Create vote in DB
       await addVoteToDb(formData);
+      setFoundVoteId(Number(events.map(e => e.voteId)));
+      setVoteTransactionHash("");
       toast({
         description: `Vote add successfully : ${events.map(
           e => `VoteId : ${Number(e.voteId)}, StartDate : ${Number(e.startDate)}, EndDate : ${Number(e.endDate)}.`)}`,

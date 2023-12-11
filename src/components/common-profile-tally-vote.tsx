@@ -4,14 +4,13 @@ import { Card } from './ui/card';
 import { MoveRight, Plus } from 'lucide-react';
 import { buttonVariants } from './ui/button';
 import Link from 'next/link';
-import { NEXT_PUBLIC_SEPOLIA_ETHERSCAN_BASE_URL, VotedEvent, adminVotePath, contractAddress, reportPath, resolutionsVotingAbi } from '@/constants/common.constants';
+import { ABSTENTION, CONTRE, NEXT_PUBLIC_SEPOLIA_ETHERSCAN_BASE_URL, POUR, VotedEvent, adminVotePath, contractAddress, reportPath } from '@/constants/common.constants';
 import { CommonGetters } from './common-getters';
 import { useSession } from 'next-auth/react';
-import { useAccount, usePublicClient } from 'wagmi';
+import { usePublicClient } from 'wagmi';
 import { BlockTag, parseAbiItem } from 'viem';
 import { useEffect, useState } from 'react';
 import { decryptAES } from '@/lib/utils';
-import { readContract } from '@wagmi/core';
 import { IVote } from '@/models/common.model';
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -26,7 +25,6 @@ export const CommonProfileTallyVote = ({ currentVote }: CommonProfileTallyVotePr
   const [tallyVotePour, setTallyVotePour] = useState<string[]>([]);
   const [tallyVoteContre, setTallyVoteContre] = useState<string[]>([]);
   const [tallyVoteAbstention, setTallyVoteAbstention] = useState<string[]>([]);
-  // const [foundVoteId, setFoundVoteId] = useState<number>(0);
   const [voteTransactionHash] = useLocalStorage<string>('VOTE_TRANSACTION_HASH', "");
 
   const getResults = async () => {
@@ -34,18 +32,21 @@ export const CommonProfileTallyVote = ({ currentVote }: CommonProfileTallyVotePr
     const decryptChoice = decryptAES(events.map(item => item.voteChoice)[0]);
     console.log("decryptChoice : ", decryptChoice);
     events.map(item => {
-      switch (decryptAES(item.voteChoice)) {
-        case "POUR":
-          setTallyVotePour([...tallyVotePour, item.voteChoice]);
-          break;
-        case "CONTRE":
-          setTallyVoteContre([...tallyVoteContre, item.voteChoice]);
-          break;
-        case "ABSTENTION":
-          setTallyVoteAbstention([...tallyVoteAbstention, item.voteChoice]);
-          break;
-        default:
-          break;
+      if (Number(item.voteId) === foundVoteId) {
+        switch (decryptAES(item.voteChoice)) {
+          case POUR:
+            setTallyVotePour([...tallyVotePour, item.voteChoice]);
+            break;
+          case CONTRE:
+            setTallyVoteContre([...tallyVoteContre, item.voteChoice]);
+            break;
+          case ABSTENTION:
+            setTallyVoteAbstention([...tallyVoteAbstention, item.voteChoice]);
+            break;
+          default:
+            console.error("Does not exist !");
+            break;
+        }
       }
     });
   }
@@ -90,7 +91,7 @@ export const CommonProfileTallyVote = ({ currentVote }: CommonProfileTallyVotePr
 
                     <div className='flex flex-col justify-center items-center'>
                       <span>Voici le lien de la transaction du votre vote</span>
-                      <a href={NEXT_PUBLIC_SEPOLIA_ETHERSCAN_BASE_URL.concat(voteTransactionHash)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">{NEXT_PUBLIC_SEPOLIA_ETHERSCAN_BASE_URL}{voteTransactionHash}</a>
+                      <a href={NEXT_PUBLIC_SEPOLIA_ETHERSCAN_BASE_URL.concat(voteTransactionHash)} className="font-medium italic text-blue-600 dark:text-blue-500 hover:underline">{NEXT_PUBLIC_SEPOLIA_ETHERSCAN_BASE_URL}{voteTransactionHash}</a>
                     </div>}
                   <p className='text-center text-lg italic font-normal'>
                     {currentVote.description}
@@ -145,7 +146,6 @@ export const CommonProfileTallyVote = ({ currentVote }: CommonProfileTallyVotePr
                 null
               }
               {
-
                 foundVoteId && currentVote && !currentVote.isEnabled
                   ?
                   <div className='flex flex-col gap-2'>

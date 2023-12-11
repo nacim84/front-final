@@ -1,21 +1,20 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import SuccessIcon from "../../public/svg/success-icon.svg"
 import FailureIcon from "../../public/svg/failure-icon.svg";
 import { Card } from './ui/card';
 import CommonDialogVote from './common-dialog-vote';
 import { prepareWriteContract, writeContract, waitForTransaction } from '@wagmi/core';
-import { VotedEvent, contractAddress, resolutionsVotingAbi } from '@/constants/common.constants';
+import { NEXT_PUBLIC_SEPOLIA_ETHERSCAN_BASE_URL, VotedEvent, contractAddress, resolutionsVotingAbi } from '@/constants/common.constants';
 import { BlockTag, parseAbiItem } from 'viem';
-import { useAccount, usePublicClient } from 'wagmi';
+import { usePublicClient } from 'wagmi';
 import { useToast } from './ui/use-toast';
 import Image from "next/image";
 import { CommonGetters } from './common-getters';
 import { IVote } from '@/models/common.model';
 import { decryptAES, encryptAES } from '@/lib/utils';
 import { useLocalStorage } from 'usehooks-ts';
-import { readContract } from '@wagmi/core';
 
 
 interface CommonProfileProps {
@@ -25,27 +24,13 @@ interface CommonProfileProps {
 export const CommonProfile = ({ currentVote }: CommonProfileProps) => {
   const client = usePublicClient();
   const { toast } = useToast();
-  const account = useAccount();
-  const [foundVoteId, setFoundVoteId] = useState<number>(0);
-  const [_, setVoteTransactionHash] = useLocalStorage<string>('VOTE_TRANSACTION_HASH', "");
-
-  const getVoteId = async () => {
-    try {
-      const voteId = await readContract({
-        address: contractAddress as `0x${string}`,
-        abi: resolutionsVotingAbi,
-        functionName: 'voteId',
-        account: account.address
-      });
-      setFoundVoteId(Number(voteId));
-    } catch (err) {
-      const error = err as Error;
-      console.log(error.message)
-    }
-  };
+  const [pending, setPending] = useState<boolean>(false);
+  const [voteTransactionHash, setVoteTransactionHash] = useLocalStorage<string>('VOTE_TRANSACTION_HASH', "");
+  const [foundVoteId] = useLocalStorage<number>("CURRENT_VOTE_ID", 0);
 
   const voteChoiceHandler = async (choice: string) => {
     try {
+      setPending(true);
       const encryptChoice = encryptAES(choice); // token[blank]choice
       console.log("encryptChoice : ", encryptChoice);
       const { request } = await prepareWriteContract({
@@ -62,7 +47,7 @@ export const CommonProfile = ({ currentVote }: CommonProfileProps) => {
       // Save the trasaction hash in localStorage
       console.log("transactionHash : " + events[0].transactionHash);
       setVoteTransactionHash(events[0].transactionHash);
-
+      setPending(false);
       toast({
         description: `Voted successfully : ${events.map(
           e =>
@@ -73,7 +58,8 @@ export const CommonProfile = ({ currentVote }: CommonProfileProps) => {
         children: <Image src={SuccessIcon} className="w-6 h-6" alt="success" />,
       });
     } catch (err) {
-      console.log((err as Error).message)
+      console.log((err as Error).message);
+      setPending(false);
       toast({
         description: (err as Error).message,
         children: <Image src={FailureIcon} className="w-6 h-6" alt="failure" />,
@@ -105,10 +91,6 @@ export const CommonProfile = ({ currentVote }: CommonProfileProps) => {
     return events;
   };
 
-  useEffect(() => {
-    getVoteId();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
     <div className='flex flex-col gap-10 w-full'>
       <CommonGetters currentVoteId={foundVoteId} />
@@ -118,7 +100,14 @@ export const CommonProfile = ({ currentVote }: CommonProfileProps) => {
             <h1 className='text-2xl font-semibold'>Referendum municipale</h1>
             <p className='italic text-sm'>{`Date de début : ${currentVote.startDate}.`}</p>
             <p className='italic text-sm'>{`Date de fin : ${currentVote.endDate}.`}</p>
+
+            {voteTransactionHash &&
+              <div className='flex flex-col justify-center items-center mt-4'>
+                <span>Voici le lien de la transaction du votre vote</span>
+                <a href={NEXT_PUBLIC_SEPOLIA_ETHERSCAN_BASE_URL.concat(voteTransactionHash)} className="font-medium italic text-blue-600 dark:text-blue-500 hover:underline">{NEXT_PUBLIC_SEPOLIA_ETHERSCAN_BASE_URL}{voteTransactionHash}</a>
+              </div>}
           </div>
+
           <div className='flex flex-col gap-20'>
             <p className='text-center text-lg italic font-normal'>
               {currentVote.description}
@@ -127,7 +116,7 @@ export const CommonProfile = ({ currentVote }: CommonProfileProps) => {
               {
                 spanVoteItems.map(
                   (item, idx) =>
-                    <CommonDialogVote key={idx} text={item.text} className={item.className} action={item.action} />
+                    <CommonDialogVote key={idx} text={item.text} pending={pending} className={item.className} action={item.action} />
                 )
               }
             </div>

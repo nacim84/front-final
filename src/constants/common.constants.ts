@@ -11,6 +11,14 @@ export const VotedEvent = "event Voted(uint256 voteId, address voterAddress, boo
 
 export const VoteCompletedEvent = "event VoteCompleted(string hashDescription, uint256 voteId, uint256 startDate, uint256 endDate, address adminAddress, uint8 role, bool isEnabled)";
 
+
+// Vote choice
+export const POUR = "POUR";
+
+export const CONTRE = "CONTRE";
+
+export const ABSTENTION = "ABSTENTION";
+
 export const allEventItems: TEventSignature[] = [
  VoteCreatedActivatedEvent,
  VoterRegisteredEvent,

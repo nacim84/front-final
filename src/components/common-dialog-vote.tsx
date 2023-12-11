@@ -11,9 +11,10 @@ interface CommonDialogVoteProps {
  size?: "sm" | "icon" | "default" | "lg" | "custom" | null | undefined,
  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "customPositive" | "customNegative" | "winner" | null | undefined,
  className?: string;
+ pending: boolean
 }
 
-const CommonDialogVote = ({ text, className, action }: CommonDialogVoteProps) => {
+const CommonDialogVote = ({ text, className, action, pending }: CommonDialogVoteProps) => {
  return (
   <Dialog>
    <DialogTrigger asChild>
@@ -22,7 +23,7 @@ const CommonDialogVote = ({ text, className, action }: CommonDialogVoteProps) =>
     </button>
    </DialogTrigger>
    <DialogContent>
-    <ConfirmVoteDialog action={action} choice={text.toUpperCase()} />
+    <ConfirmVoteDialog action={action} pending={pending} choice={text.toUpperCase()} />
    </DialogContent>
   </Dialog>
  )
