@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Localhost config
+//-----------------
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_SUPABASE_URL")
+}
+
+// Vercel config
+//--------------
+// datasource db {
+//   provider = "postgresql"
+//   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+//   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+// }
+
+model User {
+  id          Int           @id @default(autoincrement())
+  addressHash String        @unique
+  firstName   String
+  lastName    String
+  email       String        @unique
+  dateBirth   DateTime      
+  role Role                 @default(USER)
+  image String
+  createdAt DateTime        @default(now())
+}
+
+model Vote {
+  id              Int      @id @default(autoincrement())
+  type            VoteTypeEnum
+  voteTemporality VoteTemporalityEnum
+  title           String
+  description     String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  startDate       DateTime 
+  endDate         DateTime
+  alertSender     String
+  isEnabled       Boolean 
+  authorId        Int? 
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum VoteTypeEnum {
+  RESOLUTIONS
+  CANDIDATES_PROPOSALS
+  ELECTIONS
+}
+
+enum VoteTemporalityEnum {
+  LIVE
+  PLANNED
+}

@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.grainy {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAElBMVEUAAAD8/vz08vT09vT8+vzs7uxH16TeAAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAuFJREFUOI0Vk+3NLiEIRG1B8ClAYAsQ2AIEt4D9ePtv5Xp/mZgYJ2fOFJKEfInkVWY2aglmQFkimRTV7MblYyVqD7HXyhKsSuPX12MeDhRHLtGvRG+P+B/S0Vu4OswR9tmvwNPyhdCDbVayJGads/WiUWcjCvCnruTBNHS9gmX2VzVbk7ZvB1gb1hkWFGl+A/n+/FowcO34U/XvKqZ/fHY+6vgRfU92XrOBUbGeeDfQmjWjdrK+frc6FdGReQhfSF5JvR29O2QrfNw1huTwlgsyXLo0u+5So82sgv7tsFZR2nxB6lXiquHrfD8nfYZ9SeT0LiuvSoVrxGY16pCNRZKqvwWsn5OHypPBELzohMCaRaa0ceTHYqe7X/gfJEEtKFbJpWoNqO+aS1cuTykGPpK5Ga48m6L3NefTr013KqYBQu929iP1oQ/7UwSR+i3zqruUmT84qmhzLpxyj7pr9kg7LKvqaXxZmdpn+6o8sHqSqojy02gU3U8q9PnpidiaLks0mbMYz+q2uVXsoBQ8bfURULYxRgZVYCHMv9F4OA7qxT2NPPpvGQ/sTDH2yznKh7E2AcErfcNsaIoN1izzbJiaY63x4QjUFdBSvDCvugPpu5xDny0jzEeuUQbcP1aGT9V90uixngTRLYNEIIZ6yOF1H8tm7rj2JxiefsVy53zGVy3ag5uuPsdufYOzYxLRxngKe7nhx3VAq54pmz/DK9/Q3aDam2Yt3hNXB4HuU87jKNd/CKZn77Qdn5QkXPfqSkhk7hGOXXB+7v09KbBbqdvxGqa0AqfK/atIrL2WXdAgXAJ43Wtwe/aIoacXezeGPMlhDOHDbSfHnaXsL2QzbT82GRwZuezdwcoWzx5pnOnGMUdHuiY7lhdyWzWiHnucLZQxYStMJbtcydHaQ6vtMbe0AcDbxG+QG14AL94xry4297xpy9Cpf1OoxZ740gHDfrK+gtsy0xabwJmfgtCeii79B6aj0SJeLbd7AAAAAElFTkSuQmCC);
+}
+
+.scrollbar-w-2::-webkit-scrollbar {
+  width: 0.25rem;
+  height: 0.25rem;
+}
+
+.scrollbar-track-blue-lighter::-webkit-scrollbar-track {
+  --bg-opacity: 0.5;
+  background-color: #00000015;
+}
+
+.scrollbar-thumb-blue::-webkit-scrollbar-thumb {
+  --bg-opacity: 0.5;
+  background-color: #13131374;
+}
+
+.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
+  border-radius: 7px;
+}
+
+/** CUSTOM PICKER CSS */
+.react-datetime-picker {
+  display: inline-flex;
+  position: relative;
+  border-radius: 9999px;
+  padding: 0.25rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.react-datetime-picker,
+.react-datetime-picker *,
+.react-datetime-picker *:before,
+.react-datetime-picker *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.react-datetime-picker--disabled {
+  background-color: #f0f0f0;
+  color: #6d6d6d;
+}
+
+.react-datetime-picker__wrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.react-datetime-picker__inputGroup {
+  min-width: calc(4px + (4px * 3) + 0.54em * 6 + 0.217em * 2);
+  flex-grow: 1;
+  padding: 0 2px;
+}
+
+.react-datetime-picker__inputGroup__divider {
+  padding: 1px 0;
+  white-space: pre;
+}
+
+.react-datetime-picker__inputGroup__divider,
+.react-datetime-picker__inputGroup__leadingZero {
+  display: inline-block;
+}
+
+.react-datetime-picker__inputGroup__input {
+  min-width: 0.54em;
+  height: calc(100% - 2px);
+  position: relative;
+  padding: 1px;
+  border: 0;
+  background: none;
+  color: currentColor;
+  font: inherit;
+  box-sizing: content-box;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.react-datetime-picker__inputGroup__input::-webkit-outer-spin-button,
+.react-datetime-picker__inputGroup__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.react-datetime-picker__inputGroup__input:invalid {
+  background: rgba(255, 0, 0, 0.1);
+}
+
+.react-datetime-picker__inputGroup__input--hasLeadingZero {
+  margin-left: -0.54em;
+  padding-left: calc(1px + 0.54em);
+}
+
+.react-datetime-picker__inputGroup__amPm {
+  font: inherit;
+  -webkit-appearance: menulist;
+  -moz-appearance: menulist;
+  appearance: menulist;
+}
+
+.react-datetime-picker__button {
+  border: 0;
+  background: transparent;
+  padding: 4px 6px;
+}
+
+.react-datetime-picker__button:enabled {
+  cursor: pointer;
+}
+
+.react-datetime-picker__button:enabled:hover .react-datetime-picker__button__icon,
+.react-datetime-picker__button:enabled:focus .react-datetime-picker__button__icon {
+  stroke: #4b4b4b;
+}
+
+.react-datetime-picker__button:disabled .react-datetime-picker__button__icon {
+  stroke: #000000;
+}
+
+.react-datetime-picker__button svg {
+  display: inherit;
+}
+
+.react-datetime-picker__calendar,
+.react-datetime-picker__clock {
+  z-index: 1;
+}
+
+.react-datetime-picker__calendar--closed,
+.react-datetime-picker__clock--closed {
+  display: none;
+}
+
+.react-datetime-picker__calendar {
+  width: 350px;
+  max-width: 100vw;
+}
+
+.react-datetime-picker__calendar .react-calendar {
+  border-width: thin;
+}
+
+.react-datetime-picker__clock {
+  width: 200px;
+  height: 200px;
+  max-width: 100vw;
+  padding: 25px;
+  background-color: white;
+}
