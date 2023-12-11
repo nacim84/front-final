@@ -2,8 +2,11 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 
-export const CommonReportTable = ({ logs }: { logs: any[][] }) => {
+interface CommonReportTableProps {
+ logs: any[][];
+}
 
+export const CommonReportTable = ({ logs }: CommonReportTableProps) => {
  return (
   <div className='w-full max-h-[80vh] p-2 gap-10 flex flex-col items-center overflow-auto'>
    <div className="flex flex-col gap-4 items-center justify-between">

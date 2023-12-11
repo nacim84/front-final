@@ -17,24 +17,24 @@ export const AllVotesTable = ({ data }: AllVotesTableProps) => {
      <Table className="border w-[30vw] md:w-[50vw]">
       <TableHeader>
        <TableRow>
-        <TableHead className="font-semibold max-w-xs truncate">Id vote</TableHead>
-        <TableHead className="font-semibold max-w-xs truncate">Date de début</TableHead>
-        <TableHead className="font-semibold max-w-xs truncate">Date de fin</TableHead>
-        <TableHead className="font-semibold max-w-xs truncate">title</TableHead>
-        <TableHead className="font-semibold max-w-xs truncate">description</TableHead>
-        <TableHead className="font-semibold max-w-xs truncate">isEnabled</TableHead>
+        <TableHead className="font-semibold max-w-[80px] truncate">Id vote</TableHead>
+        <TableHead className="font-semibold max-w-[80px] truncate">Date de début</TableHead>
+        <TableHead className="font-semibold max-w-[80px] truncate">Date de fin</TableHead>
+        <TableHead className="font-semibold max-w-[80px] truncate">title</TableHead>
+        <TableHead className="font-semibold max-w-[80px] truncate">description</TableHead>
+        <TableHead className="font-semibold max-w-[80px] truncate">isEnabled</TableHead>
        </TableRow>
       </TableHeader>
       <TableBody>
        {
         data.map(row =>
          <TableRow key={row.id}>
-          <TableCell className="font-medium max-w-xs truncate">{row.id}</TableCell>
-          <TableCell className="font-medium max-w-xs truncate">{row.startDate.toISOString()}</TableCell>
-          <TableCell className="font-medium max-w-xs truncate">{row.endDate.toISOString()}</TableCell>
-          <TableCell className="font-medium max-w-xs truncate">{row.title}</TableCell>
-          <TableCell className="font-medium max-w-xs truncate">{row.description}</TableCell>
-          <TableCell className="font-medium max-w-xs truncate">{String(row.isEnabled)}</TableCell>
+          <TableCell className="font-medium max-w-[80px] truncate">{row.id}</TableCell>
+          <TableCell className="font-medium max-w-[80px] truncate">{row.startDate.toISOString()}</TableCell>
+          <TableCell className="font-medium max-w-[80px] truncate">{row.endDate.toISOString()}</TableCell>
+          <TableCell className="font-medium max-w-[80px] truncate">{row.title}</TableCell>
+          <TableCell className="font-medium max-w-[80px] truncate">{row.description}</TableCell>
+          <TableCell className="font-medium max-w-[80px] truncate">{String(row.isEnabled)}</TableCell>
          </TableRow>
         )
        }

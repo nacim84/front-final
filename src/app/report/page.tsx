@@ -1,28 +1,39 @@
 "use client"
 
 import { CommonReportTable } from '@/components/common-report-table';
+import { Button } from '@/components/ui/button';
+import { ButtonWithPending } from '@/components/ui/button-with-pending';
 import { VoteCompletedEvent, VoteCreatedActivatedEvent, VotedEvent, VoterRegisteredEvent, allEventItems, contractAddress } from '@/constants/common.constants';
 import { TEventSignature } from '@/models/common.model';
 import React, { useEffect, useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { BlockTag, parseAbiItem } from 'viem';
-import { useAccount, usePublicClient } from 'wagmi';
+import { usePublicClient } from 'wagmi';
 
 const GlobalReportPage = () => {
 
   const client = usePublicClient();
-  const [logs, setLogs] = useState<any[][]>([]);
+  const [logsState, setLogsState] = useState<any[]>([]);
+  const [pending, setPending] = useState<boolean>(false);
 
   const getAllEventsHandler = async () => {
+    setPending(true);
     // VoteCreatedActivatedEvent;          // 0
     // VoterRegisteredEvent;               // 1
     // VotedEvent;                         // 2
     // VoteCompletedEvent;                 // 3
-    let globalEvents: [][] = [];
+    let globalEvents = [];
     allEventItems.map(async (item) => {
-      const event: any = await getEvents(item)
-      globalEvents.push(event);
+      getEvents(item)
+        .then((result) => {
+          globalEvents.push(result);
+        })
+        .catch((err) => console.error(err));
     });
-    setLogs(globalEvents);
+    setTimeout(() => {
+      setLogsState(globalEvents);
+      setPending(false);
+    }, 5000)
   };
 
   const getEvents = async (abiItem: TEventSignature) => {
@@ -84,14 +95,13 @@ const GlobalReportPage = () => {
     return events;
   };
 
-  useEffect(() => {
-    getAllEventsHandler();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  console.log(logsState);
   return (
     <div className='w-full'>
-      <CommonReportTable logs={logs} />
+      <div className='w-full flex flex-row-reverse pr-40'>
+        <ButtonWithPending pending={pending} onClick={getAllEventsHandler}>Refresh</ButtonWithPending>
+      </div>
+      <CommonReportTable logs={logsState} />
     </div>
   )
 }

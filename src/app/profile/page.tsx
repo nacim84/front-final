@@ -1,8 +1,5 @@
-import { CommonProfile } from "@/components/common-profile";
-import { CommonProfileTallyVote } from "@/components/common-profile-tally-vote";
 import { GlobalProfile } from "@/components/global-profile";
 import { getRequireNextAuthSession } from "@/lib/utils";
-import { IVote } from "@/models/common.model";
 
 const ProfilePage = async () => {
   const session = await getRequireNextAuthSession();
